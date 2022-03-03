@@ -120,6 +120,7 @@ def login():
 def check_and_join_meeting():
     global curParticipants
     global meeting_name
+    meeting_name=browser.title
     joins = wait_and_find_elements_by_xpath('//button[.="Join"]', 3)
     if len(joins) == 0:  # no meeting scheduled
         return
@@ -132,7 +133,6 @@ def check_and_join_meeting():
     elem = wait_and_find_element_by_xpath('//*[@id="preJoinAudioButton"]/div/button')
     if elem.get_attribute('aria-pressed') == 'true':  # turn off microphone
         elem.click()
-    meeting_name = wait_and_find_element_by_xpath('//*[@id="page-content-wrapper"]/div[1]/div/calling-pre-join-screen/div/div/div[2]/div[1]/div[1]/div/p').text()
     wait_and_find_element_by_xpath('//button[.="Join now"]').click()  # join meeting
     print('Joined the meeting at {}'.format(datetime.now()))
     discord_notification("Joined meeting", f"Hi {config['nickname']}, I joined the meeting named {meeting_name} at {datetime.now()}.")
